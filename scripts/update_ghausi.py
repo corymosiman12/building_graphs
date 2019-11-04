@@ -6,7 +6,7 @@ from utils.utils import *
 # as this repo.
 ex_dir = os.path.join(os.getcwd(), '../brick-examples/haystack')
 ex_file = os.path.join(ex_dir, "ghausi.json")
-to_write = os.path.join(ex_dir, "ghausi_v2.json")
+to_write = os.path.join(ex_dir, "ghausi-improved.json")
 
 # Import the json file as a dictionary.
 bldg = import_haystack_json(ex_file)
@@ -29,5 +29,7 @@ def add_marker(entities, marker_str):
         e[marker_str] = "M"
     return entities
 
+# TODO: Add point marker to all sensors and all FCUs
 sens = add_marker(sensors, 'point')
+cmds = add_marker(cmds, 'point')
 print(sens[0].keys())
