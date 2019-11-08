@@ -1,6 +1,6 @@
 import json
 import os
-from utils.utils import *
+from utils import *
 
 # Define the example file to use for the analysis.
 # Clone the brick-examples repo to the same directory level
