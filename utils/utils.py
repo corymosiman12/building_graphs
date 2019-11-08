@@ -275,7 +275,11 @@ def reporter(report, name):
     print("Number of valid entities: {}".format(valid))
     print("Number of entities w/no first class entity defined: {}".format(no_fc_entity))
     print("Number of entities w/multiple first class entities defined: {}".format(mult_fc_entities))
-    with open(os.path.join(os.getcwd(), 'output/report_{}'.format(name)), 'w') as f:
+    output_dir = os.path.join(os.getcwd(), 'output')
+    if not os.path.isdir(output_dir):
+        os.makedirs(output_dir)
+    output_file = os.path.join(output_dir, 'report_{}'.format(name))
+    with open(output_file, 'w') as f:
         json.dump(report, f)
 
 # TODO: Add how BRICK points 'found' given equip.
