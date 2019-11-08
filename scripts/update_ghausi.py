@@ -1,6 +1,8 @@
 import json
 import os
-from utils import *
+import sys
+sys.path.append(os.getcwd())
+from utils.utils import *
 
 # Define the example file to use for the analysis.
 # Clone the brick-examples repo to the same directory level

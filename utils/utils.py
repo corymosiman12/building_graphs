@@ -116,12 +116,17 @@ def remove_tag(entities, tag):
     return output
 
 
-# Identify all of the 'typing' (i.e. marker tags) used
-# for the list of entity dicts
-def which_types(entities):
+# Identify all of the 'typing' (i.e. marker tags) used.
+# Regardless of if a dict or a list of dicts is passed,
+# all unique marker types are passed back in a single list
+def which_markers(entities):
     types = []
-    for e in entities:
-        for k, v in e.items():
+    if isinstance(entities, list):
+        for e in entities:
+            for k, v in e.items():
+                types.append(k) if (v == "m:" and not k in types) else None
+    elif isinstance(entities, dict):
+        for k, v in entities.items():
             types.append(k) if (v == "m:" and not k in types) else None
     return types
 
@@ -137,6 +142,7 @@ def init_haystack_graph(path=HAYSTACK_DEFS):
     g.parse(path, format="ttl")
     return g
 
+
 # Run the given query on the graph (given the path to the graph),
 # returning as a list
 def query_return_list(path, q):
@@ -147,6 +153,7 @@ def query_return_list(path, q):
         m2.append(str(m[0]).split("#")[1])
     return m2
 
+
 # Query the ttl file to find all ph:marker objects
 # and all subClassOf ph:marker objects
 # Return as a list of strings, removing the URI's
@@ -156,12 +163,14 @@ def ph_load_all_markers(path=HAYSTACK_DEFS):
     }"""
     return query_return_list(path, q)
 
+
 # Load defs which are direct subclasses of marker
 def ph_load_fc_markers(path=HAYSTACK_DEFS):
     q = """SELECT ?m WHERE {
         ?m rdfs:subClassOf ph:marker
     }"""
     return query_return_list(path, q)
+
 
 # Query the ttl file to find all ph:entity objects
 # and all subClassOf ph:entity objects
@@ -174,6 +183,7 @@ def ph_load_all_entities(path=HAYSTACK_DEFS):
         ?e rdfs:subClassOf* ph:entity
     }"""
     return query_return_list(path, q)
+
 
 # Load defs which are direct subclasses of entity
 def ph_load_fc_entities(path=HAYSTACK_DEFS):
@@ -189,11 +199,13 @@ def ph_load_all_equips(path=HAYSTACK_DEFS):
     }"""
     return query_return_list(path, q)
 
+
 def ph_load_fc_equips(path=HAYSTACK_DEFS):
     q = """SELECT ?e WHERE {
         ?e rdfs:subClassOf phIoT:equip
     }"""
     return query_return_list(path, q)
+
 
 def ph_load_pointFunctionTypes(path=HAYSTACK_DEFS):
     q = """SELECT ?e WHERE {
@@ -201,10 +213,70 @@ def ph_load_pointFunctionTypes(path=HAYSTACK_DEFS):
     }"""
     return query_return_list(path, q)
 
-# Given a list of entities (dicts), provide an output identifying
-#     - All of the 'typing' tags used (i.e. markers)
-#     -
-# def understand_entities(entities):
+
+# Given a single entity, attempt to determine the 'type'.  The following logic
+# is used:
+# 1. limit entity tags to only valid haystack markers
+# 2. Determine the entity type
+#     - Raise error if multiple or none of first class entity markers defined
+def ph_typer(entity, valid_entities=ph_load_fc_entities()):
+    to_return = {}
+    if not 'id' in entity.keys():
+        to_return['status'] = {
+            'valid': False,
+            'description': 'Entity does not have an id'
+        }
+        return to_return
+    to_return['id'] = entity['id']
+    # refine all tags on entity to only marker tags
+    entity_markers = which_markers(entity)
+    entity_markers = set(entity_markers)
+
+    # load valid markers and first class entities (direct subClassOf ph:entity)
+    # from Haystack defs.ttl
+    ph_valid_entities = valid_entities
+
+    # determine the entity type.  Should be exactly one entity type,
+    # raise Exception if else.
+    entity_valid_entity = entity_markers.intersection(ph_valid_entities)
+    if len(entity_valid_entity) == 0:
+        to_return['valid'] = False
+        to_return['description'] = "No first class entity type provided"
+    elif len(entity_valid_entity) > 1:
+        to_return['valid'] = False
+        to_return['description'] = "Mutliple first class entity types provided: {}".format(entity_valid_entity)
+    else:
+        to_return['valid'] = True
+        to_return['fc_entity_type'] = list(entity_valid_entity)[0]
+    return to_return
+
+# Iterate through list of entities, providing a typer for each
+def ph_typer_many(entities, valid_entities=ph_load_fc_entities()):
+    report = []
+    for e in entities:
+        report.append(ph_typer(e, valid_entities))
+    return report
+
+# Expect a report from ph_typer_many, print out report
+def reporter(report, name):
+    valid = 0
+    no_fc_entity = 0
+    mult_fc_entities = 0
+
+    for r in report:
+        if r['valid']:
+            valid += 1
+        else:
+            if r['description'] == 'No first class entity type provided':
+                no_fc_entity += 1
+            else:
+                mult_fc_entities += 1
+    print("Report for {}".format(name))
+    print("Number of valid entities: {}".format(valid))
+    print("Number of entities w/no first class entity defined: {}".format(no_fc_entity))
+    print("Number of entities w/multiple first class entities defined: {}".format(mult_fc_entities))
+    with open(os.path.join(os.getcwd(), 'output/report_{}'.format(name)), 'w') as f:
+        json.dump(report, f)
 
 # TODO: Add how BRICK points 'found' given equip.
 # Given an equip dict, and a dict of entities, find the points

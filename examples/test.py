@@ -1,8 +1,9 @@
 from rdflib import RDF, RDFS, OWL, Namespace, Graph
 import json
 import os
-from utils import *
-
+import sys
+sys.path.append(os.getcwd())
+from utils.utils import *
 # Instantiate a graph
 g = Graph()
 
