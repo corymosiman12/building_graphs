@@ -2,10 +2,10 @@ import os
 import sys
 sys.path.append(os.getcwd())
 from utils.utils import *
-from rdflib import RDFS, RDF, Namespace, Graph, URIRef
+from utils.queries import *
 
 # Modify the following to one of the files in the brick-examples/haystack directory
-file_to_analyze = "gaithersburg.json"
+file_to_analyze = "pes.json"
 
 # Define location of brick-example/haystack
 ex_dir = os.path.join(os.getcwd(), '../brick-examples/haystack')
@@ -22,7 +22,7 @@ bldg = import_haystack_json(ex_file)
 bldg = cleanup_marker_tags(bldg)
 
 # Load all marker tags used in the building as a list of strings
-bldg_markers = which_markers(bldg)
+bldg_markers = only_markers(bldg)
 
 # Using the Haystack 4 (3.9.7) defs.ttl, find the valid
 # entities and markers
@@ -45,7 +45,3 @@ m_sym_dif = s_valid_hs_markers.symmetric_difference(s_bldg_types)
 # are not valid Haystack types.  These are custom marker
 # typings from the building
 custom_bldg_types = s_bldg_types.difference(s_valid_hs_markers)
-
-# Understand entities that have first class entities defined
-report = ph_typer_many(bldg)
-reporter(report, file_to_analyze)
