@@ -17,6 +17,18 @@ Generally, other questions which intend to be answered:
 
 This repository intends to provide methods / open source examples for how to accomplish this.
 
+# Plotting Utilities
+## Plots to analyze tags present on entities
+`plot1` is designed to create individual plots for each of the tag-categories:
+1. invalid_vals: vals present in the model that ARE NOT specified by the Haystack 4.0 defs.ttl
+1. invalid_markers: markers present in the model that ARE NOT specified by the Haystack 4.0 defs.ttl
+1. valid_vals: vals present in the model that ARE specified by the Haystack 4.0 defs.ttl
+1. valid_markers: markers present in the model that AREA specified by the Haystack 4.0 defs.ttl
+
+Investigating valid_vals and valid_markers helps us to see similarites in first class entities with `other` entities, i.e. entities which do not have a first class entity defined.
+| ![](img/ghausi-improved_valid_vals.png) | ![](img/ghausi-improved_valid_markers.png) |
+|:--:|:--:|
+
 # Setup
 1. Clone this repo
 1. Create a new virtual environment and install dependencies defined in `requirements.txt`
