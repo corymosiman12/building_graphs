@@ -41,6 +41,9 @@ def import_haystack_json(file):
         data = json.load(f)
     return data['rows']
 
+def find_sites(entities):
+    sites, _ = find_tagset(entities, tags=['site'])
+    return (sites, _)
 
 # Find all of the equipment given a Haystack 'rows' dict
 def find_equips(entities):
@@ -332,6 +335,21 @@ def ph_reporter_general(entities, report):
     return report
 
 
+def lowest_subclass(class_list, fc_entity_type):
+    if len(class_list) == 1:
+        return class_list[0]
+    else:
+        lc = fc_entity_type
+        subclasses = ph_subclass_of_phiot(fc_entity_type)
+        while len(class_list) > 0:
+            for sc in range(0, len(class_list)):
+                if class_list[sc] in subclasses:
+                    lc = class_list.pop(sc)
+                    subclasses = ph_subclass_of_phiot(lc)
+                    break
+
+        return lc
+
 # Iterate through list of entities, providing a typer for each
 def ph_typer_many(entities, valid_entities=FC_ENTITIES, all_entities=ALL_ENTITIES):
     report = {
@@ -340,21 +358,38 @@ def ph_typer_many(entities, valid_entities=FC_ENTITIES, all_entities=ALL_ENTITIE
     }
     for e in entities:
         report['entities'].append(ph_typer(e, valid_entities, all_entities))
-
+    for e in range(0, len(report['entities'])):
+        if 'subclasses_in_entity' in report['entities'][e].keys():
+            sc = report['entities'][e]['subclasses_in_entity']
+            fc = report['entities'][e]['fc_entity_type']
+            report['entities'][e]['lowest_subclass'] = lowest_subclass(sc, fc)
     report = ph_reporter_general(entities, report)
     return report
 
 
 # Expect a report from ph_typer_many, print out report
-def reporter(report, bldg_name):
+def reporter(report, bldg_name, bldg):
     valid = 0
     no_fc_entity = 0
     mult_fc_entities = 0
+    fc_count = {}
+    subclass_count = {}
 
     # Count the number of valid entities
     for r in report['entities']:
         if r['valid']:
             valid += 1
+            if 'lowest_subclass' in r.keys():
+                sc = r['lowest_subclass']
+                if sc not in subclass_count.keys():
+                    subclass_count[sc] = 1
+                else:
+                    subclass_count[sc] += 1
+            fc = r['fc_entity_type']
+            if fc not in fc_count.keys():
+                fc_count[fc] = 1
+            else:
+                fc_count[fc] += 1
         else:
             if r['description'] == 'No first class entity type provided':
                 no_fc_entity += 1
@@ -362,9 +397,17 @@ def reporter(report, bldg_name):
                 mult_fc_entities += 1
 
     print("Report for {}".format(bldg_name))
+    print("Total number of entities: {}".format(len(bldg)))
     print("Number of valid entities: {}".format(valid))
     print("Number of entities w/no first class entity defined: {}".format(no_fc_entity))
     print("Number of entities w/multiple first class entities defined: {}".format(mult_fc_entities))
+    print("Count of classes by lowest subclass found: {}".format(subclass_count))
+    print("Count of first class entities: {}".format(fc_count))
+    if 'site' in fc_count.keys():
+        sites, _ = find_sites(bldg)
+        for s in sites:
+            print("Site info: {}".format(s))
+
     # print(json.dumps(report['general'], sort_keys=True, indent=2))
     output_dir = os.path.join(os.getcwd(), 'output', bldg_name)
     if not os.path.isdir(output_dir):

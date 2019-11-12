@@ -94,7 +94,7 @@ def ph_load_pointFunctionTypes(path=HAYSTACK_DEFS):
     return query_return_list(path, q)
 
 
-def ph_subclass_of(cl, path=HAYSTACK_DEFS):
+def ph_subclass_of_phiot(cl, path=HAYSTACK_DEFS):
     q = """SELECT ?e WHERE {
         ?e rdfs:subClassOf phIoT:%s
     }""" % cl

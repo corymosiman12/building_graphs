@@ -19,7 +19,7 @@ Currently, one of:
     vrtdump
 """
 
-bldg_name = "vrtdump"
+bldg_name = "gaithersburg"
 file_to_analyze = bldg_name + ".json"
 
 # Define location of brick-example/haystack
@@ -38,13 +38,13 @@ bldg = cleanup_marker_tags(bldg)
 
 # Understand entities that have Haystack first class entities defined
 report = ph_typer_many(bldg)
-reporter(report, bldg_name)
+reporter(report, bldg_name, bldg)
 
-# CSV filename
-csv_name = "report_{}.csv".format(bldg_name)
-output_dir = os.path.join(os.getcwd(), 'output', bldg_name)
-output_file = os.path.join(output_dir, csv_name)
-
-# Read in csv file as a dataframe
-df = pd.read_csv(output_file)
-plot1(df, output_dir, bldg_name)
+# # CSV filename
+# csv_name = "report_{}.csv".format(bldg_name)
+# output_dir = os.path.join(os.getcwd(), 'output', bldg_name)
+# output_file = os.path.join(output_dir, csv_name)
+#
+# # Read in csv file as a dataframe
+# df = pd.read_csv(output_file)
+# plot1(df, output_dir, bldg_name)
