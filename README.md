@@ -28,8 +28,8 @@ This repository intends to provide methods / open source examples for how to acc
 Investigating valid_vals and valid_markers helps us to see similarites in first class entities with `other` entities, i.e. entities which do not have a first class entity defined.
 
 <p align="middle">
-    <img src="img/ghausi-improved_valid_markers.png" width="100" />
-    <img src="img/ghausi-improved_valid_vals.png.png" width="100" />
+    <img src="img/ghausi-improved_valid_markers.png" width="100%" />
+    <img src="img/ghausi-improved_valid_vals.png" width="100%" />
 </p>
 
 # Setup
