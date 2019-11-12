@@ -4,6 +4,7 @@ import os
 from rdflib import RDFS, RDF, OWL, Namespace, Graph, URIRef
 from .queries import *
 from itertools import permutations
+import csv
 
 # Bulk load queries as lists to limit disc calls
 ALL_ENTITIES = ph_load_all_entities()
@@ -345,7 +346,7 @@ def ph_typer_many(entities, valid_entities=FC_ENTITIES, all_entities=ALL_ENTITIE
 
 
 # Expect a report from ph_typer_many, print out report
-def reporter(report, name):
+def reporter(report, bldg_name):
     valid = 0
     no_fc_entity = 0
     mult_fc_entities = 0
@@ -360,18 +361,27 @@ def reporter(report, name):
             else:
                 mult_fc_entities += 1
 
-    print("Report for {}".format(name))
+    print("Report for {}".format(bldg_name))
     print("Number of valid entities: {}".format(valid))
     print("Number of entities w/no first class entity defined: {}".format(no_fc_entity))
     print("Number of entities w/multiple first class entities defined: {}".format(mult_fc_entities))
-    print(json.dumps(report['general'], sort_keys=True, indent=2))
-    output_dir = os.path.join(os.getcwd(), 'output')
+    # print(json.dumps(report['general'], sort_keys=True, indent=2))
+    output_dir = os.path.join(os.getcwd(), 'output', bldg_name)
     if not os.path.isdir(output_dir):
         os.makedirs(output_dir)
-    output_file = os.path.join(output_dir, 'report_{}'.format(name))
-    with open(output_file, 'w') as f:
+    summary_json = os.path.join(output_dir, 'report_{}.json'.format(bldg_name))
+    summary_csv = os.path.join(output_dir, 'report_{}.csv'.format(bldg_name))
+    with open(summary_json, 'w') as f:
         json.dump(report, f, sort_keys=True, indent=2)
 
+    with open(summary_csv, 'w') as f:
+        headers = ['entity_type', 'tag_category', 'tag', 'count']
+        csv_writer = csv.writer(f)
+        csv_writer.writerow(headers)
+        for entity_type in report['general']['count_tags_by_entity'].keys():
+            for tag_category in report['general']['count_tags_by_entity'][entity_type].keys():
+                for tag, val in report['general']['count_tags_by_entity'][entity_type][tag_category].items():
+                    csv_writer.writerow([entity_type, tag_category, tag, val])
 
 # TODO: Add how BRICK points 'found' given equip.
 # Given an equip dict, and a dict of entities, find the points
