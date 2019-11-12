@@ -25,8 +25,8 @@ This repository intends to provide methods / open source examples for how to acc
 | 2           | Gaithersburg | gaithersburg.json    | 147               | 143               | 4                    | 0                          | 31                       | 108   | 4    | 0     | 6               | 9          | 13    | 0   | 3     | 0   |
 | 3           | VRT Systems  | vrtdump.json         | 149               | 146               | 1                    | 2                          | 30                       | 111   | 2    | 3     | 0               | 0          | 30    | 0   | 0     | 0   |
 | 4           | Ghausi       | ghausi.json          | 2183              | 125               | 2058                 | 0                          | 105                      | 20    | 0    | 0     | 5               | 3          | 17    |     | 2     | 78  |
+| 4.1         | Ghausi       | ghausi-improved.json | 2183              | 1570              | 613                  | 0                          | 105                      | 1465  | 0    | 0     | 5               | 3          | 9     | 8   | 2     | 78  |
 | 5           | Pes          | pes.json             | 6474              | 229               | 6245                 | 0                          | 211                      | 18    | 0    | 0     | 8               | 3          | 4     | 0   | 2     | 194 |
-|             | Ghausi       | ghausi-improved.json | 2183              | 1570              | 613                  | 0                          | 105                      | 1465  | 0    | 0     | 5               | 3          | 9     | 8   | 2     | 78  |
 
 # Plotting Utilities
 ## Plots to analyze tags present on entities
