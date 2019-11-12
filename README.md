@@ -26,8 +26,11 @@ This repository intends to provide methods / open source examples for how to acc
 1. valid_markers: markers present in the model that AREA specified by the Haystack 4.0 defs.ttl
 
 Investigating valid_vals and valid_markers helps us to see similarites in first class entities with `other` entities, i.e. entities which do not have a first class entity defined.
-| ![](img/ghausi-improved_valid_vals.png) | ![](img/ghausi-improved_valid_markers.png) |
-|:--:|:--:|
+
+<p align="middle">
+    <img src="img/ghausi-improved_valid_markers.png" width="100" />
+    <img src="img/ghausi-improved_valid_vals.png.png" width="100" />
+</p>
 
 # Setup
 1. Clone this repo
