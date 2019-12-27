@@ -1,0 +1,168 @@
+[
+  {
+    "id": "84d9ac76-1841-4d8b-9d8f-19ddda7e1ab5",
+    "shortDescription": "AHU Outside Damper Stuck Open",
+    "longDescription": "Damper should be closed, but temp differential between mixed air sensor and return air sensor indicates that significant outside air is being mixed.  If mixed sensor is not available we use discharge sensor but only when unit is not cooling nor heating.",
+    "haystack": {
+      "relationships": [
+        {
+          "rdfs:domain": "phIoT:ahu",
+          "rdfs:range": "phIoT:ahu"
+        }
+      ],
+      "phIoT:point": [
+        {
+          "phIoT:pointFunctionType": "phIoT:sensor",
+          "ph:hasTag": [
+            "phIoT:return",
+            "phScience:air",
+            "phScience:temp",
+            "phIoT:sensor",
+            "phIoT:point"
+          ]
+        },
+        {
+          "phIoT:pointFunctionType": "phIoT:sensor",
+          "ph:hasTag": [
+            "phIoT:mixed",
+            "phScience:air",
+            "phScience:temp",
+            "phIoT:sensor",
+            "phIoT:point"
+          ]
+        },
+        {
+          "phIoT:pointFunctionType": "phIoT:sensor",
+          "ph:hasTag": [
+            "phIoT:discharge",
+            "phScience:air",
+            "phScience:temp",
+            "phIoT:sensor",
+            "phIoT:point"
+          ]
+        },
+        {
+          "phIoT:pointFunctionType": "phIoT:cmd",
+          "ph:hasTag": [
+            "phIoT:fan",
+            "phIoT:run",
+            "phIoT:state",
+            "phIoT:cmd",
+            "phIoT:point"
+          ]
+        },
+        {
+          "phIoT:pointFunctionType": "phIoT:cmd",
+          "ph:hasTag": [
+            "phIoT:cmd",
+            "phIoT:point",
+            "phIoT:damper"
+          ]
+        },
+        {
+          "phIoT:pointFunctionType": "phIoT:cmd",
+          "ph:hasTag": [
+            "phIoT:cmd",
+            "phIoT:point",
+            "phIoT:valve",
+            "phIoT:cool"
+          ]
+        },
+        {
+          "phIoT:pointFunctionType": "phIoT:cmd",
+          "ph:hasTag": [
+            "phIoT:cmd",
+            "phIoT:point",
+            "phIoT:valve",
+            "phIoT:heat"
+          ]
+        }
+      ]
+    },
+    "brick": {
+      "relationships": [
+        {
+          "rdfs:domain": "brick:Air_Handler_Unit",
+          "rdfs:range": "brick:Air_Handler_Unit"
+        }
+      ],
+      "brick:Point": [
+        "brick:Return_Air_Temperature_Sensor",
+        "brick:Mixed_Air_Temperature_Sensor",
+        "brick:Discharge_Air_Temperature_Sensor",
+        "brick:AHU_Discharge_Fan_Command",
+        "brick:Outside_Air_Damper_Position_Command",
+        "brick:AHU_Cooling_Valve_Command",
+        "brick:AHU_Heating_Valve_Command"
+      ]
+    }
+  },
+  {
+    "id": "a7d90ae5-4eb4-4e0d-a6b1-14a4c20a83f8",
+    "shortDescription": "AHU Cooling Failure",
+    "longDescription": "Unit is cooling, but temperature drop between return sensor and discharge sensor is under expected threshold",
+    "haystack": {
+      "relationships": [
+        {
+          "rdfs:domain": "phIoT:ahu",
+          "rdfs:range": "phIoT:ahu"
+        }
+      ],
+      "phIoT:point": [
+        {
+          "phIoT:pointFunctionType": "phIoT:sensor",
+          "ph:hasTag": [
+            "phIoT:return",
+            "phScience:air",
+            "phScience:temp",
+            "phIoT:sensor",
+            "phIoT:point"
+          ]
+        },
+        {
+          "phIoT:pointFunctionType": "phIoT:sensor",
+          "ph:hasTag": [
+            "phIoT:discharge",
+            "phScience:air",
+            "phScience:temp",
+            "phIoT:sensor",
+            "phIoT:point"
+          ]
+        },
+        {
+          "phIoT:pointFunctionType": "phIoT:cmd",
+          "ph:hasTag": [
+            "phIoT:fan",
+            "phIoT:run",
+            "phIoT:state",
+            "phIoT:cmd",
+            "phIoT:point"
+          ]
+        },
+        {
+          "phIoT:pointFunctionType": "phIoT:cmd",
+          "ph:hasTag": [
+            "phIoT:cmd",
+            "phIoT:point",
+            "phIoT:valve",
+            "phIoT:cool"
+          ]
+        }
+      ]
+    },
+    "brick": {
+      "relationships": [
+        {
+          "rdfs:domain": "brick:Air_Handler_Unit",
+          "rdfs:range": "brick:Air_Handler_Unit"
+        }
+      ],
+      "brick:Point": [
+        "brick:Return_Air_Temperature_Sensor",
+        "brick:Discharge_Air_Temperature_Sensor",
+        "brick:AHU_Discharge_Fan_Command",
+        "brick:AHU_Cooling_Valve_Command"
+      ]
+    }
+  }
+]

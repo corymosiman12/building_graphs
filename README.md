@@ -34,7 +34,7 @@ This repository intends to provide methods / open source examples for how to acc
 1. invalid_vals: vals present in the model that ARE NOT specified by the Haystack 4.0 defs.ttl
 1. invalid_markers: markers present in the model that ARE NOT specified by the Haystack 4.0 defs.ttl
 1. valid_vals: vals present in the model that ARE specified by the Haystack 4.0 defs.ttl
-1. valid_markers: markers present in the model that AREA specified by the Haystack 4.0 defs.ttl
+1. valid_markers: markers present in the model that ARE specified by the Haystack 4.0 defs.ttl
 
 Investigating valid_vals and valid_markers helps us to see similarites in first class entities with `other` entities, i.e. entities which do not have a first class entity defined.
 
@@ -59,3 +59,5 @@ RDF definitions serialized as TTL files for both Brick and Haystack.  Stored loc
 
 ## scripts
 Scripts designed to perform specific functions.
+
+## use 
