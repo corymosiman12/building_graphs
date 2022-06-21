@@ -8,7 +8,7 @@ kiwisolver==1.1.0
 matplotlib==3.1.1
 mizani==0.6.0
 more-itertools==7.2.0
-numpy==1.17.4
+numpy==1.22.0
 Owlready2==0.21
 owlrl==5.2.0
 packaging==19.2
